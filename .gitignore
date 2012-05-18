@@ -10,3 +10,559 @@
 *.lai
 *.la
 *.a
+#include "stdafx.h"
+#include <conio.h>
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
+struct link{
+  string element;
+	int key;
+	link* next;
+};
+class linklist{
+private:
+	link* first;
+public:
+	linklist ()
+	{first=NULL;}
+	void add (string d, int k);
+	void display();
+	void cikl(int q);
+};
+void linklist::add(string d, int k){
+	link* newlink=new link;
+	newlink->element=d;
+	newlink->key=k;
+	newlink->next=first;
+	first=newlink;
+}
+void linklist::cikl(int q){
+	link* current=first;
+	while (current){
+		if (q==current->key) current->element=" ->"+current->element;
+		else {current->element="   "+current->element;
+		}
+		current=current->next;
+}
+}
+void linklist::display(){
+	link* current=first;
+	while (current){
+		cout<<current->element<<endl;
+		current=current->next;
+	}
+}
+struct Node{
+	Node *next;
+	string data;
+	int id;
+	Node *prev;//предыдущий
+};
+class Gloss {
+	Node *first;
+	int num;
+	int max;
+public:
+	void Addc();
+	void load();
+	void save();
+	Gloss():first(NULL){}
+	void Add(string n){
+		Node *current = first;
+		Node *newlink = new Node;
+		if (first==NULL){//если первый добавляем
+			num=0;
+			first=newlink;
+			newlink->next=NULL;
+			newlink->prev=NULL;
+			newlink->data=n;
+			newlink->id=num;
+			num++;
+		}else{
+			while (current->next!=NULL) {//идем до последнего
+				current=current->next;
+			}
+			current->next=newlink;//последний теперь указывает на новый
+			first->prev=newlink;
+			newlink->next=NULL;
+			newlink->prev=current;
+			newlink->data=n;
+			newlink->id=num;
+			num++;
+		}
+	}
+	void addcenter (string n){
+	Node *current = first;
+	Node *newlink = new Node;
+	Node *temporary= new Node;
+		if(first == NULL)
+		{
+			num=0;
+			newlink->data=n;
+			newlink->id=num;
+			newlink->next=NULL;
+			newlink->prev=NULL;
+			first=newlink;
+			num++;
+		}
+		else{
+			if (max!=0 && num<0) num=max;
+			int number_of_elements=0;
+			while (current)//идем до конца 
+			{
+				number_of_elements++;
+				current=current->next;
+			}
+			current=first;
+			int needed_el;
+			if (number_of_elements%2 ==1)
+			{
+				needed_el=number_of_elements/2;
+			}
+			else 
+			{
+				needed_el=(number_of_elements-1)/2;
+			}
+			int shet=0;
+			while(shet<needed_el+1)
+			{
+				if (shet == needed_el)
+				{
+					newlink->data=n;
+					newlink->id=num;
+					num++;
+					newlink->next=current->next;
+					newlink->prev=current;
+					current->next=newlink;
+				}
+				shet++;
+				current=current->next;
+			}
+		}
+}
+	void Showfromfirst(){
+		Node *current = first;
+		if (first==NULL) cout<<"Нет элементов списка";
+		else
+			do {
+			cout<<current->id<<"   "<<current->data<<endl;
+			current=current->next;
+		} while (current!=NULL);
+	}
+
+
+	void Del();
+	void DelAll();
+	void addnum(string str, int Num);
+	void loadfile();
+	void savefile();};
+void exit ();
+void enter_1(int k);
+void enter_2(int k);
+class Podmenu{
+public:
+	void Work();
+	void Prosmotr();
+	void Redaktirovat();
+	void Dobavit();
+	void Udalit();
+	void Gener();
+	void Sort();
+};
+void enter(int select){
+	system("cls");
+	Podmenu da;
+	switch(select){
+		case 48: exit(); break;
+		case 49: da.Work(); break;
+		case 50: da.Prosmotr(); break;
+		case 51: da.Redaktirovat(); break;
+		case 52: da.Dobavit(); break;
+		case 53: da.Udalit(); break;
+		case 54: da.Sort(); break;
+		case 55: da.Gener(); break;
+	}
+}
+Gloss *tes=new Gloss;
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int select=49;
+	int k=49;
+	while (true){
+	linklist li;
+	li.add("0: Выход", 48);
+	li.add("7: Генератор списка*", 55);
+	li.add("6: Сортировать*", 54);
+	li.add("5: Удалить", 53);
+	li.add("4: Добавить*", 52);
+	li.add("3: Редактировать", 51);
+	li.add("2: Просмотр*", 50);
+	li.add("1: Работа с файлами", 49);
+	li.add("_______МЕНЮ________", 34);
+	switch(select){
+case 224: select=k; break;
+case 72: if (k!=48)k-=1;
+	else k=55; select=k; break;
+case 80: if (k!=55)k+=1;
+	else k=48; select=k; break;
+case 27: exit(); select=49; break;
+case 13: enter(k); select=49; break;
+	}
+	k=select;
+	li.cikl(k);
+	li.display();
+	select=getch();
+	if (select==56 || select==57) select=k;
+		system ("cls");
+	}
+	system("pause");
+	return 0;
+}
+void Podmenu::Work(){
+	int k=49;
+	int select=49;
+	while (true){
+	linklist work;
+	work.add("0: Назад", 48);
+	work.add(" ", 34);
+	work.add("2: Сохранить в файл", 50);
+	work.add("1: Загрузить из файла", 49);
+	work.add("_____Работа с файлами_____", 34);
+		switch(select){
+	case 224: select=k; break;
+	case 72: if (k!=48)k-=1;
+		else k=50; select=k; break;
+	case 80: if (k!=50)k+=1;
+		else k=48; select=k; break;
+	case 13:  enter_2(k); select=49; break;
+	case 27: select=49;break;
+		}
+		k=select;
+	work.cikl(k);
+	work.display();
+	select=getch();
+	if (select==13 && k==48 || select==27)break;
+	if ((select<48 || select>52)&& select!=72 && select!=80 && select!=224 && select!=13) select=k;
+	system ("cls");
+	}
+	system("cls");
+}
+void Podmenu::Prosmotr()
+{
+	int select=49;
+	int k=49;
+	while (true){
+		linklist red;
+		tes->Showfromfirst();
+		red.cikl(k);
+		red.display();
+		select=getch();
+		if (select==27 || select==13) {select=49; system("cls"); break;}
+		if (select!=49) select=k;
+			system ("cls");
+	}
+}
+void Podmenu::Redaktirovat(){
+	int k=49;
+	int select=49;
+	while (true){
+	linklist red;
+	red.add("0: Назад", 48);
+	red.add(" ", 34);
+	red.add("2: Изменение записи", 50);
+	red.add("1: Перемена мест", 49);
+	red.add("_____Редактирование_____", 34);
+		switch(select){
+	case 224: select=k; break;
+	case 72: if (k!=48)k-=1;
+		else k=50; select=k; break;
+	case 80: if (k!=50)k+=1;
+		else k=48; select=k; break;
+	case 13: if (k!=48) enter(k);
+			 select=49; break;
+	case 27: select=49;break;
+		}
+		k=select;
+	red.cikl(k);
+	red.display();
+	select=getch();
+	if (select==13 && k==48 || select==27)break;
+	if ((select<48 || select>50)&& select!=72 && select!=80 && select!=224) select=k;
+	system ("cls");
+	}
+	system("cls");
+}
+void Podmenu::Udalit(){
+	int k=49;
+	int select=49;
+	while (true){
+	linklist del;
+	del.add("0: Назад", 48);
+	del.add("  ", 34);
+	del.add("3: Удалить последний", 51);
+	del.add("2: Удалить первый", 50);
+	del.add("1: Удалить по номеру", 49);
+	del.add("______Удаление______", 34);
+	switch(select){
+	case 224: select=k; break;
+	case 72: if (k!=48)k-=1;
+		else k=51; select=k; break;
+	case 80: if (k!=51)k+=1;
+		else k=48; select=k; break;
+	case 13: enter(k); select=49; break;
+	case 27: select=49;break;
+		}
+		k=select;
+		int c=0;
+	del.cikl(k);
+	del.display();
+	select=getch();
+	if (select==13 && k==48 || select==27)break;
+	if ((select<48 || select>51)&& select!=72 && select!=80 && select!=224) select=k;
+		system ("cls");
+	}
+	system("cls");
+}
+void Podmenu::Dobavit(){
+	int k=49;
+	int select=49;
+	while (true){
+	linklist dob;
+	dob.add("0: Назад", 48);
+	dob.add(" ", 34);
+	dob.add("4: Добавить в середину*", 52);
+	dob.add("3: Добавить последний", 51);
+	dob.add("2: Добавить первый", 50);
+	dob.add("1: Добавить по номеру", 49);
+	dob.add("_____Добавление_____", 34);
+	switch(select){
+	case 224: select=k; break;
+	case 72: if (k!=48)k-=1;
+		else k=52; select=k; break;
+	case 80: if (k!=52)k+=1;
+		else k=48; select=k; break;
+	case 13: cout<<"slkjflkj"; enter_1(k); select=49; break;
+	case 27: select=49;break;
+		}
+		k=select;
+	dob.cikl(k);
+	dob.display();
+	select=getch();
+	if (select==13 && k==48 || select==27)break;
+	if ((select<48 || select>52)&& select!=72 && select!=80 && select!=224 && select!=13) select=k;
+		system ("cls");
+	}
+	system ("cls");
+}
+void Podmenu::Sort(){
+	int k=49;
+	int select=49;
+	while (true){
+	linklist sort;
+	sort.add("0: Назад", 48);
+	sort.add("  ", 34);
+	sort.add("3: Сортировать по алфавиту Я-А", 51);
+	sort.add("2: Сортировать по алфавиту А-Я", 50);
+	sort.add("1: Сортировка по ключу", 49);
+	sort.add("____Сортировка____", 34);
+	switch(select){
+	case 224: select=k; break;
+	case 72: if (k!=48)k-=1;
+		else k=51; select=k; break;
+	case 80: if (k!=51)k+=1;
+		else k=48; select=k; break;
+	case 13: enter(k); select=49; break;
+	case 27: select=49;break;
+		}
+		k=select;
+	sort.cikl(k);
+	sort.display();
+	select=getch();
+	if (select==13 && k==48 || select==27)break;
+	if ((select<48 || select>51)&& select!=72 && select!=80 && select!=224) select=k;
+		system ("cls");
+	}
+	system ("cls");
+}
+void Podmenu::Gener(){
+	int select=49;
+	int k=49;
+	while (true){
+		linklist gen;
+		tes->Add ("ехал");
+		tes->Add ("Грека");
+		tes->Add ("через");
+		tes->Add ("реку");
+		gen.add("0: Назад", 49);
+		gen.add("              ", 34);
+		gen.add("              ", 34);
+		gen.add("Функция выполнена.", 34);
+		gen.cikl(k);
+		gen.display();
+		select=getch();
+		if (select==27 || select==13) {select=49; system("cls"); break;}
+		if (select!=49) select=k;
+			system ("cls");
+	}
+}
+void exit (){
+	system("cls");
+	int select=49;
+	int k=49;
+	while (true){
+		linklist ex;
+		ex.add("Нет", 50);
+		ex.add("Да", 49);
+		ex.add("Вы действедельно хотите выйти?", 34);
+		switch(select){
+			case 224: select=k; break;
+			case 72: if (k==50)k-=1; 
+				else k=50; break;
+			case 80: if (k==49)k+=1; 
+				else k=49; break;
+		}
+		ex.cikl(k);
+		ex.display();
+		select=getch();
+		if (select==13) {if (k==49) exit(0); else system ("cls"); break;}
+		if (select==27) {select=49; system("cls"); break;}
+		if ((select<49 || select>50)&& select!=72 && select!=80 && select!=224) select=k;
+			system ("cls");
+	}
+}
+
+void enter_1(int k){
+	system("cls");
+	Gloss ur;
+	switch(k){
+		case 52: ur.Addc();
+	}
+}
+void enter_2(int k){
+	system("cls");
+	Gloss ur;
+	switch(k){
+		case 49: ur.load(); break;
+		case 50: ur.save(); break;
+	}
+}
+void Gloss::load(){
+	int select=49;
+	int k=49;
+	while (true){
+		linklist acc;
+		tes->loadfile ();
+		system("cls");
+		acc.add("0: Назад", 49);
+		acc.add("              ", 34);
+		acc.add("              ", 34);
+		acc.add("загрузка файла выполнена", 34);
+		acc.cikl(k);
+		acc.display();
+		select=getch();
+		if (select==27 || select==13) {select=49; system("cls"); break;}
+		if (select!=49) select=k;
+			system ("cls");
+	}
+}
+void Gloss::save(){
+	int select=49;
+	int k=49;
+	while (true){
+		linklist acc;
+		tes->savefile ();
+		system("cls");
+		acc.add("0: Назад", 49);
+		acc.add("              ", 34);
+		acc.add("              ", 34);
+		acc.add("сохранение в файл выполнено", 34);
+		acc.cikl(k);
+		acc.display();
+		select=getch();
+		if (select==27 || select==13) {select=49; system("cls"); break;}
+		if (select!=49) select=k;
+			system ("cls");
+	}
+}
+
+void Gloss::Addc(){
+	int select=49;
+	int k=49;
+	while (true){
+		cout<<"Добавление в середину"<<endl<<"Введите строку"<<endl;
+		linklist acc;
+		string stroka;
+		cin>>stroka;
+		tes->addcenter (stroka);
+		system("cls");
+		acc.add("0: Назад", 49);
+		acc.add("              ", 34);
+		acc.add("              ", 34);
+		acc.add("Дополнение в середину выполнено.", 34);
+		acc.cikl(k);
+		acc.display();
+		select=getch();
+		if (select==27 || select==13) {select=49; system("cls"); break;}
+		if (select!=49) select=k;
+			system ("cls");
+	}
+}
+
+void Gloss::Del(){
+    if (num>0) num--;
+        if(first!= NULL){
+    Node *temp=first;
+    first=first->next;
+    delete temp;
+    }
+}
+void Gloss::DelAll(){
+    while(first!=0){
+    Del();
+}
+}
+
+void Gloss::addnum(string Str, int Num){
+	Node *temp= first;
+	Node *added = new Node;
+	if(temp==NULL){
+		first=added;
+		max=1;
+	}
+	else {
+		max++;
+		while(temp->next!= NULL){
+			temp=temp->next;
+		}
+		temp->next=added;
+	}
+	added->next=NULL;
+	added->data=Str;
+	added->id=Num;
+}
+void Gloss::loadfile(){
+this->DelAll();
+ifstream out ("base.bin", ios::binary);
+while (!out.eof()){
+	string Str;
+	int cur;
+	out>>Str;
+	out>>cur;
+	this->addnum(Str,cur);
+}
+out.close();
+}
+void Gloss::savefile(){
+	ofstream to ("base.bin", ios::binary);
+	Node *temp=first;
+	while (temp){
+		to<<temp->data<<' ';
+		to<<temp->id;
+		temp=temp->next;
+	}
+	to.close();
+}
